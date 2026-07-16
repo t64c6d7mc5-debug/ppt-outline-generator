@@ -1,0 +1,17 @@
+{
+  "name": "ppt-outline-generator",
+  "version": "2.3.15-rc2",
+  "private": false,
+  "type": "module",
+  "description": "Result-first PPT script generator for OpenAI-compatible local models",
+  "scripts": {
+    "start": "node server.js",
+    "start:local": "node --env-file=.env server.js",
+    "check": "node --check server.js && find lib js test 真实回归/tools -type f \\( -name '*.js' -o -name '*.mjs' \\) -exec node --check {} \\; && find scripts -type f -name '*.sh' -exec bash -n {} \\;",
+    "test": "node --test",
+    "release:manifest": "bash scripts/generate-release-manifest.sh"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

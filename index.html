@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PPT 大纲/脚本生成器 v2.3.15-rc2</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div>
+        <p class="eyebrow" data-legacy-label="PPT Outline Generator v2.3.15-rc2">PPT 大纲生成工作台 v2.3.15-rc2</p>
+        <h1>PPT 大纲/脚本生成器</h1>
+        <p class="subtitle">一句话先出客户可沟通草案，资料充分时再进入专业拆解和质量门槛。</p>
+        <ul class="trust-list" aria-label="核心能力">
+          <li>普通模式快速起稿</li>
+          <li>专业模式完整拆解</li>
+          <li>客户版 / 制作版分层复制</li>
+        </ul>
+      </div>
+      <div class="hero-panel">
+        <span>本地生成 · 资料充分时进入生产级质量门槛</span>
+        <strong>草案快速生成 · 专业质量检查</strong>
+      </div>
+    </section>
+
+    <section class="mode-switch" aria-label="模式切换">
+      <span>当前模式：</span>
+      <button class="mode-btn is-active" id="simpleModeBtn" type="button" aria-pressed="true">简易模式</button>
+      <button class="mode-btn" id="professionalModeBtn" type="button" aria-pressed="false">专业模式</button>
+    </section>
+
+    <section class="workspace">
+      <form class="input-panel mode-panel mode-panel-simple" id="simpleForm">
+        <div class="panel-header">
+          <p class="eyebrow">普通模式</p>
+          <h2>先用一句话生成 PPT 方案</h2>
+          <p>适合客户只给一句话、资料还不完整的接单初期。先生成可编辑草案，再根据待确认项补资料。</p>
+        </div>
+
+        <label class="field field-wide primary-field">
+          <span>一句话需求</span>
+          <em class="field-hint">客户不用写得很专业，只要把想做什么、什么主题、什么用途说出来即可。</em>
+          <textarea id="simpleNeed" rows="5" placeholder="直接说你想做什么，例如：我要做一个新能源汽车客户画像分析 PPT，10 页左右，风格高级一点，明天要交。" required></textarea>
+        </label>
+
+        <div class="actions field-wide simple-actions">
+          <button class="primary-btn" id="simpleGenerateBtn" type="button">生成 PPT 方案</button>
+          <button class="ghost-btn" id="simpleResetBtn" type="button">重置</button>
+        </div>
+
+        <p class="trust-note field-wide">会优先返回可编辑草案，并明确区分用户已确认、系统建议和待确认资料。</p>
+
+        <fieldset class="radio-group field-wide">
+          <legend>客户资料情况</legend>
+          <label><input type="radio" name="simpleMaterials" value="只有一句话需求" checked> 只有一句话需求</label>
+          <label><input type="radio" name="simpleMaterials" value="有文字资料 / 图片 / 文件，需要整理"> 有文字资料 / 图片 / 文件，需要整理</label>
+          <p>如果客户什么资料都没有，就选择只有一句话需求；如果客户发了文字、截图、图片、文件内容，就选择有资料。</p>
+        </fieldset>
+
+        <details class="advanced-settings field-wide" id="simpleAdvancedSettings">
+          <summary>
+            <span>更多设置与客户资料</span>
+            <em>页数、风格、用途、截止时间和资料粘贴</em>
+          </summary>
+
+          <div class="advanced-grid">
+            <label class="field field-wide" id="simpleMaterialsTextField">
+              <span>粘贴客户资料</span>
+              <textarea id="simpleMaterialsText" rows="4" placeholder="如果客户发了资料，把文字内容粘贴到这里；如果只有截图或文件，可以先简单描述资料内容。"></textarea>
+            </label>
+
+            <label class="field">
+              <span>PPT 页数</span>
+              <select id="simplePageCount">
+                <option value="auto">自动判断</option>
+                <option value="6">6 页</option>
+                <option value="8">8 页</option>
+                <option value="10">10 页</option>
+                <option value="12">12 页</option>
+                <option value="custom">自定义</option>
+              </select>
+              <small class="field-hint">不同 PPT 类型存在独立上限；产品介绍当前最多 15 页。</small>
+            </label>
+
+            <label class="field is-hidden" id="simpleCustomPageField">
+              <span>自定义页数</span>
+              <input type="number" id="simpleCustomPageCount" min="3" max="30" placeholder="例如：9">
+            </label>
+
+            <label class="field">
+              <span>风格偏好</span>
+              <select id="simpleStyle">
+                <option value="auto">自动判断</option>
+                <option value="简洁">简洁</option>
+                <option value="高级">高级</option>
+                <option value="科技感">科技感</option>
+                <option value="商务正式">商务正式</option>
+                <option value="活泼">活泼</option>
+                <option value="答辩风">答辩风</option>
+                <option value="招商路演风">招商路演风</option>
+                <option value="温暖">温暖</option>
+                <option value="视觉冲击强">视觉冲击强</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>交付用途</span>
+              <select id="simplePurpose">
+                <option value="auto">自动判断</option>
+                <option value="作业 / 课程汇报">作业 / 课程汇报</option>
+                <option value="商业汇报">商业汇报</option>
+                <option value="产品介绍">产品介绍</option>
+                <option value="公司介绍">公司介绍</option>
+                <option value="招商方案">招商方案</option>
+                <option value="培训课件">培训课件</option>
+                <option value="答辩展示">答辩展示</option>
+                <option value="活动宣传">活动宣传</option>
+                <option value="其他">其他</option>
+              </select>
+            </label>
+
+            <label class="field field-wide">
+              <span>截止时间</span>
+              <select id="simpleDeadline">
+                <option value="">未指定</option>
+                <option value="今晚">今晚</option>
+                <option value="明天上午">明天上午</option>
+                <option value="三天内">三天内</option>
+                <option value="不急">不急</option>
+              </select>
+            </label>
+          </div>
+        </details>
+      </form>
+
+      <form class="input-panel mode-panel is-hidden" id="outlineForm">
+        <div class="panel-header">
+          <p class="eyebrow">专业模式</p>
+          <h2>填写 PPT 项目需求</h2>
+          <p>信息不完整时，先用追问补齐，不直接硬编最终方案。</p>
+        </div>
+
+        <ol class="progress-steps field-wide" aria-label="专业模式流程">
+          <li class="is-current">1 填需求</li>
+          <li>2 生成追问</li>
+          <li>3 生成摘要</li>
+          <li>4 生成大纲</li>
+        </ol>
+
+        <details class="form-section professional-section field-wide" data-professional-section="basics" open>
+          <summary class="form-section-header">
+            <span>01</span>
+            <h3 id="sectionBasicsTitle">基础需求</h3>
+            <p>先确定主题、页数、场景和整体风格。</p>
+          </summary>
+          <div class="form-section-grid">
+        <label class="field field-wide">
+          <span>PPT 主题</span>
+          <input type="text" id="topic" placeholder="例如：新能源企业年度经营汇报" required>
+        </label>
+
+        <label class="field">
+          <span>页数</span>
+          <input type="number" id="pageCount" min="3" max="30" value="8" required>
+          <small class="field-hint">不同 PPT 类型存在独立上限；产品介绍当前最多 15 页。</small>
+        </label>
+
+        <label class="field">
+          <span>使用场景</span>
+          <select id="scenario">
+            <option value="汇报">汇报</option>
+            <option value="答辩">答辩</option>
+            <option value="商业计划">商业计划</option>
+            <option value="产品介绍">产品介绍</option>
+            <option value="课程分享">课程分享</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>风格</span>
+          <select id="style">
+            <option value="正式">正式</option>
+            <option value="简洁">简洁</option>
+            <option value="高级">高级</option>
+            <option value="活泼">活泼</option>
+            <option value="科技感">科技感</option>
+          </select>
+        </label>
+          </div>
+        </details>
+
+        <details class="form-section professional-section field-wide" data-professional-section="audience" open>
+          <summary class="form-section-header">
+            <span>02</span>
+            <h3 id="sectionAudienceTitle">受众与用途</h3>
+            <p>说明这份 PPT 要让谁看、为什么看、看完后要做什么判断。</p>
+          </summary>
+          <div class="form-section-grid">
+        <label class="field">
+          <span>PPT 使用目的</span>
+          <select id="purpose">
+            <option value="汇报">汇报</option>
+            <option value="说服">说服</option>
+            <option value="展示">展示</option>
+            <option value="招商">招商</option>
+            <option value="答辩">答辩</option>
+            <option value="培训">培训</option>
+            <option value="销售转化">销售转化</option>
+          </select>
+        </label>
+
+        <label class="field field-wide">
+          <span>详细使用目的</span>
+          <textarea id="detailedPurpose" rows="3" placeholder="例如：展示园区 AI 视频、展示屏和企业宣传能力，提升潜在企业对园区数字化服务的理解。"></textarea>
+        </label>
+
+        <label class="field field-wide">
+          <span>目标观众是谁</span>
+          <textarea id="audience" rows="3" placeholder="例如：老板、客户、评委、投资人、销售团队、新员工"></textarea>
+        </label>
+          </div>
+        </details>
+
+        <details class="form-section professional-section field-wide" data-professional-section="materials" open>
+          <summary class="form-section-header">
+            <span>03</span>
+            <h3 id="sectionMaterialsTitle">客户已有资料</h3>
+            <p>区分已确认事实、客户材料和仍需补充的资料边界。</p>
+          </summary>
+          <div class="form-section-grid">
+        <fieldset class="check-group field-wide">
+          <legend>客户已有资料情况</legend>
+          <label><input type="checkbox" name="materials" value="只有主题" checked> 只有主题</label>
+          <label><input type="checkbox" name="materials" value="有文字资料"> 有文字资料</label>
+          <label><input type="checkbox" name="materials" value="有数据"> 有数据</label>
+          <label><input type="checkbox" name="materials" value="有图片"> 有图片</label>
+          <label><input type="checkbox" name="materials" value="有品牌要求"> 有品牌要求</label>
+        </fieldset>
+
+        <label class="field field-wide">
+          <span>客户已有资料详细说明</span>
+          <textarea id="materialDetails" rows="3" placeholder="例如：客户已有园区基础介绍、部分空间照片、招商政策文字资料，但缺少完整案例整理、展示屏素材和企业宣传片。"></textarea>
+        </label>
+          </div>
+        </details>
+
+        <details class="form-section professional-section field-wide" data-professional-section="constraints" open>
+          <summary class="form-section-header">
+            <span>04</span>
+            <h3 id="sectionConstraintsTitle">内容约束</h3>
+            <p>明确必须呈现、不能提及和希望突出的内容，减少后续返工。</p>
+          </summary>
+          <div class="form-section-grid">
+        <label class="field field-wide">
+          <span>必须呈现的重点内容</span>
+          <em class="field-hint">提示：这里建议写完整句子，不要只写关键词，越具体生成结果越稳。</em>
+          <textarea id="mustHave" rows="3" placeholder="例如：项目背景、三项成果、下一阶段计划、预算申请"></textarea>
+        </label>
+
+        <label class="field field-wide">
+          <span>不能提的内容或风险点</span>
+          <em class="field-hint">提示：这里建议写完整句子，不要只写关键词，越具体生成结果越稳。</em>
+          <textarea id="riskPoints" rows="3" placeholder="例如：未公开合作方、未确认营收、竞品名称、敏感数据"></textarea>
+        </label>
+
+        <label class="field field-wide">
+          <span>希望突出</span>
+          <select id="emphasis">
+            <option value="逻辑清晰">逻辑清晰</option>
+            <option value="视觉高级">视觉高级</option>
+            <option value="数据专业">数据专业</option>
+            <option value="情绪感染">情绪感染</option>
+            <option value="商业价值">商业价值</option>
+            <option value="产品卖点">产品卖点</option>
+          </select>
+        </label>
+
+        <label class="field field-wide">
+          <span>希望突出具体内容</span>
+          <textarea id="customHighlight" rows="3" placeholder="例如：招商接待效率、企业服务能力、AI 内容生产流程、展示屏落地路径、合作试点步骤。"></textarea>
+        </label>
+          </div>
+        </details>
+
+        <details class="form-section professional-section field-wide" data-professional-section="delivery" open>
+          <summary class="form-section-header">
+            <span>05</span>
+            <h3 id="sectionDeliveryTitle">交付要求</h3>
+            <p>确认演讲稿、配图、排版、参考风格和截止时间。</p>
+          </summary>
+          <div class="form-section-grid">
+        <div class="option-grid field-wide">
+          <label><input type="checkbox" id="needScript" checked> 需要演讲稿</label>
+          <label><input type="checkbox" id="needImages" checked> 需要配图建议</label>
+          <label><input type="checkbox" id="needLayouts" checked> 需要每页排版建议</label>
+        </div>
+
+        <label class="field field-wide">
+          <span>参考风格或参考案例</span>
+          <textarea id="reference" rows="2" placeholder="例如：咨询公司风格、苹果发布会、课堂互动型分享、投融资 BP"></textarea>
+        </label>
+
+        <label class="field field-wide">
+          <span>截止时间</span>
+          <select id="professionalDeadline">
+            <option value="">未指定</option>
+            <option value="今晚">今晚</option>
+            <option value="明天上午">明天上午</option>
+            <option value="三天内">三天内</option>
+            <option value="不急">不急</option>
+          </select>
+        </label>
+          </div>
+        </details>
+
+        <div class="actions field-wide">
+          <button class="primary-btn" id="questionBtn" type="button">生成追问</button>
+          <button class="secondary-btn" id="summaryBtn" type="button">生成需求摘要</button>
+          <button class="primary-btn" id="generateBtn" type="button">确认需求并生成 PPT 大纲</button>
+          <button class="ghost-btn" id="resetBtn" type="button">重置</button>
+        </div>
+      </form>
+
+      <section class="result-panel">
+        <div class="result-topbar">
+          <div>
+            <p class="eyebrow" id="resultModeLabel">普通模式结果</p>
+            <h2 id="resultTitle">问答、摘要与完整结果</h2>
+          </div>
+          <div class="copy-actions" id="copyActions">
+            <div class="copy-action">
+              <button class="copy-btn" id="copyClientBtn" type="button" disabled>复制客户版</button>
+              <span>适合发送给客户，不含内部制作信息</span>
+            </div>
+            <div class="copy-action">
+              <button class="copy-btn" id="copyBtn" type="button" disabled>复制制作版</button>
+              <span>包含证据、资料缺口、提示词和演讲备注</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-actions" id="resultActions" hidden>
+          <button class="ghost-btn" id="expandAllBtn" type="button">全部展开</button>
+          <button class="ghost-btn" id="collapseAllBtn" type="button">全部收起</button>
+          <button class="ghost-btn" id="backToTopBtn" type="button">返回顶部</button>
+        </div>
+
+        <div class="step-stack">
+          <article class="step-card professional-result-only">
+            <span class="step-label">步骤二</span>
+            <h3>生成 3 到 5 个追问问题</h3>
+            <div class="muted-box" id="questionBox">填写项目需求后，点击“生成追问”。</div>
+            <label class="field follow-field">
+              <span>追问回答补充</span>
+              <textarea id="followAnswers" rows="4" placeholder="把客户补充回答写在这里，摘要和最终 PPT 会一起参考。"></textarea>
+            </label>
+          </article>
+
+          <article class="step-card professional-result-only">
+            <span class="step-label">步骤三</span>
+            <h3>生成需求理解摘要</h3>
+            <div class="muted-box" id="summaryBox">点击“生成需求摘要”后，会整理主题、场景、观众、目的、重点、风格、风险和交付内容。</div>
+          </article>
+
+          <article class="step-card">
+            <span class="step-label" id="finalStepLabel">结果</span>
+            <h3 id="finalStepTitle">生成 PPT 方案初稿</h3>
+            <div class="empty-state" id="emptyState">
+              <h3 id="emptyStateTitle">还没有生成 PPT 方案</h3>
+              <p id="emptyStateText">填写简易需求后，这里会展示总标题、整体逻辑结构、逐页制作提纲、配图建议和演讲备注。</p>
+            </div>
+            <div class="cards" id="cards" hidden></div>
+          </article>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">已复制到剪贴板</div>
+
+  <script type="module" src="js/main.js?v=2.3.15-rc2-result-first-2"></script>
+</body>
+</html>

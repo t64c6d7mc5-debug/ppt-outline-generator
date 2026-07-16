@@ -1,0 +1,67 @@
+# Local runtime configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies, build output, editor state and operating-system files
+node_modules/
+.vercel/
+.DS_Store
+.idea/
+.vscode/
+coverage/
+tmp/
+temp/
+cache/
+.cache/
+*.tmp
+*.temp
+*.save
+*.backup.js
+*.log
+*.pid
+*.sqlite
+*.sqlite3
+*.db
+
+# Local model assets and private runtime artifacts
+*.gguf
+*.safetensors
+*.mlx
+*.bin
+真实回归/
+打开方式/
+版本快照/
+部署测试输出/
+
+# Internal release history, snapshots and plans with local paths
+BASELINE-v2.3.15.md
+CURRENT-STATE-v2.3.15.md
+PROJECT_STATUS_20260620.md
+RELEASE-v2.3.5.md
+RELEASE-v2.3.6.md
+RELEASE-v2.3.14.md
+RELEASE-v2.3.15.md
+RELEASE-v2.3.15-rc1.md
+PUBLISH-CANDIDATE-v2.3.15-rc1.md
+RELEASE-E*.md
+checksum-summary.txt
+snapshot-manifest.txt
+
+docs/superpowers/
+.superpowers/
+
+# Private customer regression materials; public tests remain self-contained.
+test/fixtures/ai-park-professional-input.js
+test/fixtures/ai-park-quality-failure-outline.js
+test/fixtures/racing-center-professional-input.js
+test/v2314-professional-quality-gates.test.js
+test/v2315-atomic-mismatch-diagnostics.test.js
+test/v2315-concentrated-atomic-fixes.test.js
+test/v2315-content-obligation.test.js
+test/v2315-final-four-matchers.test.js
+test/v2315-required-section-authority.test.js
+test/v2315-required-section-selection.test.js
+test/v2315-requirement-binding.test.js
+test/v2315-requirement-binding.test.js
+test/v2315-resource-key-message.test.js
