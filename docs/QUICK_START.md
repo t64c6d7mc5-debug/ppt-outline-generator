@@ -4,11 +4,11 @@
 
 ### 1. 下载和解压
 
-公开仓库发布后，使用 GitHub Release 压缩包、**Code → Download ZIP** 或 Git：
+使用 GitHub Release 压缩包、**Code → Download ZIP** 或 Git：
 
 ```bash
-git clone <repository-url>
-cd local-llm-ppt-script-generator
+git clone https://github.com/t64c6d7mc5-debug/ppt-outline-generator.git
+cd ppt-outline-generator
 ```
 
 所有命令都应在项目根目录执行。
@@ -28,11 +28,11 @@ npm install
 cp .env.example .env
 ```
 
-编辑 `.env`，不要将它提交到仓库：
+模板默认关闭本地模型，保证未配置模型也能启动并使用 deterministic fallback。编辑 `.env` 时不要将它提交到仓库：
 
 ```env
 PORT=3100
-LOCAL_MODEL_ENABLED=true
+LOCAL_MODEL_ENABLED=false
 LOCAL_MODEL_PROVIDER=openai-compatible
 LOCAL_MODEL_BASE_URL=http://127.0.0.1:8080/api
 LOCAL_MODEL_API_KEY=
@@ -42,7 +42,7 @@ LOCAL_MODEL_SUPPORTS_JSON_SCHEMA=true
 LOCAL_MODEL_MAX_REPAIR_ATTEMPTS=1
 ```
 
-`LOCAL_MODEL_BASE_URL` 和端口必须改为你的运行时实际地址。上述地址是 OpenWebUI 示例，不是产品默认绑定；如果运行时不支持 JSON Schema，请将该项设为 `false`。
+`LOCAL_MODEL_BASE_URL` 和端口必须改为你的运行时实际地址。上述地址是 OpenWebUI 示例，不是产品默认绑定；如果运行时不支持 JSON Schema，请将该项设为 `false`。配置好 endpoint、模型 ID 和必要凭据后，再把 `LOCAL_MODEL_ENABLED=true`。本地模型不是强制依赖；启用后可获得更丰富、更贴合需求的生成内容。
 
 ### 4. Provider 配置示例
 
@@ -104,11 +104,11 @@ bash scripts/prepublish-check.sh
 
 ### 1. Download and extract
 
-After the public repository is available, use a GitHub Release archive, **Code → Download ZIP**, or Git:
+Use a GitHub Release archive, **Code → Download ZIP**, or Git:
 
 ```bash
-git clone <repository-url>
-cd local-llm-ppt-script-generator
+git clone https://github.com/t64c6d7mc5-debug/ppt-outline-generator.git
+cd ppt-outline-generator
 ```
 
 Run all remaining commands from the project root.
@@ -128,7 +128,7 @@ Node.js 22 or newer is required.
 cp .env.example .env
 ```
 
-Edit `.env` with the generic `LOCAL_MODEL_*` variables shown in the Chinese section. Replace the example base URL and model ID with values reported by your own OpenAI-compatible runtime. Leave `LOCAL_MODEL_API_KEY` empty when authentication is not required, and do not commit `.env`.
+The template uses `LOCAL_MODEL_ENABLED=false` by default, so an unconfigured installation can use deterministic fallback. After setting a real endpoint, model ID, and any required credential, change it to `LOCAL_MODEL_ENABLED=true`. A local model is optional but produces richer content that is more closely tailored to the request. Replace the example base URL and model ID with values reported by your own OpenAI-compatible runtime. Leave `LOCAL_MODEL_API_KEY` empty when authentication is not required, and do not commit `.env`.
 
 Common examples are OpenWebUI (`/api`), Ollama (`/v1`), LM Studio (`/v1`), MLX server (`/v1`), llama.cpp server (`/v1`), and vLLM (`/v1`). Ports vary; the table above is illustrative only.
 

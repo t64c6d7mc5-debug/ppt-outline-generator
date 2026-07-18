@@ -1,0 +1,34 @@
+name: Bug report
+description: Report a reproducible public-product issue without private material.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include API keys, local paths, customer material, raw prompts, or private model output."
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Release or commit you tested.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Use a sanitized sample request.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true

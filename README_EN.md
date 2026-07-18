@@ -6,10 +6,10 @@ A local-first, result-first application that turns business forms, source materi
 
 ## Screenshot placeholder
 
-Only sanitized demo screenshots belong in [`docs/assets`](docs/assets/README.md). Do not publish customer material, credentials, request evidence, internal diagnostics, or local paths.
+Only sanitized demo screenshots or GIFs belong in [`docs/assets`](docs/assets/README.md). Do not publish customer material, credentials, request evidence, internal diagnostics, or local paths.
 
 ```text
-docs/assets/demo-result.png (to be supplied by the maintainer)
+docs/assets/demo-result.png or docs/assets/demo-flow.gif (to be supplied by the maintainer)
 ```
 
 ## What it supports
@@ -25,15 +25,15 @@ The application generates PPT scripts and production guidance. It does not rende
 
 ## Download
 
-After the public repository is available, choose one method:
+Choose one method:
 
 1. Download a versioned archive from GitHub Releases.
 2. Use **Code → Download ZIP** on the repository page.
 3. Clone the source:
 
 ```bash
-git clone <repository-url>
-cd local-llm-ppt-script-generator
+git clone https://github.com/t64c6d7mc5-debug/ppt-outline-generator.git
+cd ppt-outline-generator
 ```
 
 If you downloaded an archive, extract it and run the following commands from the project root.
@@ -64,21 +64,19 @@ The browser UI, API, and controlled runner use the same pipeline. Ordinary quali
 ## Install and start
 
 ```bash
-cp .env.example .env
-# Edit .env with your own local endpoint and model ID.
 npm install
 ./scripts/check-environment.sh
 ./scripts/start.sh
 ```
 
-On macOS, `scripts/start-macos.command` is a generic double-click launcher. It resolves the repository root from its own location and never uses a personal Desktop path. The template uses port `3100`; trust the address printed by the server.
+The app also starts without `.env`: the launcher explicitly uses deterministic fallback. Copy the template only when you want to persist a port or configure a model: `cp .env.example .env`. On macOS, `scripts/start-macos.command` is a generic double-click launcher. It resolves the repository root from its own location and never uses a personal Desktop path. The template uses port `3100`; trust the address printed by the server.
 
 ## Generic local-model configuration
 
 Use the `LOCAL_MODEL_*` variables in `.env`:
 
 ```env
-LOCAL_MODEL_ENABLED=true
+LOCAL_MODEL_ENABLED=false
 LOCAL_MODEL_PROVIDER=openai-compatible
 LOCAL_MODEL_BASE_URL=http://127.0.0.1:8080/api
 LOCAL_MODEL_API_KEY=
@@ -88,7 +86,7 @@ LOCAL_MODEL_SUPPORTS_JSON_SCHEMA=true
 LOCAL_MODEL_MAX_REPAIR_ATTEMPTS=1
 ```
 
-The address above is a common OpenWebUI example, not a product binding. Use the URL and model ID shown by your own runtime. Set JSON Schema support to `false` when the runtime rejects it.
+The template intentionally starts with `LOCAL_MODEL_ENABLED=false`, so a new user can work with deterministic fallback before configuring a model. After you set a real endpoint, model ID, and any required credential, change it to `LOCAL_MODEL_ENABLED=true`. A local model is optional, but it can produce richer output that follows the request more closely. The address above is a common OpenWebUI example, not a product binding. Use the URL and model ID shown by your own runtime. Set JSON Schema support to `false` when the runtime rejects it.
 
 | Variable | Purpose |
 | --- | --- |

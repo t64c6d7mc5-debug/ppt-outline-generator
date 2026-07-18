@@ -4,10 +4,19 @@
   "private": false,
   "type": "module",
   "description": "Result-first PPT script generator for OpenAI-compatible local models",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/t64c6d7mc5-debug/ppt-outline-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/t64c6d7mc5-debug/ppt-outline-generator/issues"
+  },
+  "homepage": "https://github.com/t64c6d7mc5-debug/ppt-outline-generator#readme",
   "scripts": {
     "start": "node server.js",
     "start:local": "node --env-file=.env server.js",
-    "check": "node --check server.js && find lib js test 真实回归/tools -type f \\( -name '*.js' -o -name '*.mjs' \\) -exec node --check {} \\; && find scripts -type f -name '*.sh' -exec bash -n {} \\;",
+    "check": "node --check server.js && find lib js test -type f \\( -name '*.js' -o -name '*.mjs' \\) -exec node --check {} \\; && if [ -d 真实回归/tools ]; then find 真实回归/tools -type f \\( -name '*.js' -o -name '*.mjs' \\) -exec node --check {} \\; ; fi && find scripts -type f -name '*.sh' -exec bash -n {} \\;",
     "test": "node --test",
     "release:manifest": "bash scripts/generate-release-manifest.sh"
   },

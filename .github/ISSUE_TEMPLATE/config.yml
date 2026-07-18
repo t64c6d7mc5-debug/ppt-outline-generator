@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security issue
+    url: https://github.com/t64c6d7mc5-debug/ppt-outline-generator/security/policy
+    about: Do not publish credentials, customer material, or private evidence in an issue.

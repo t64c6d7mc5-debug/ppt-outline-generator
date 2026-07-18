@@ -1,0 +1,15 @@
+{
+  "mode": "professional",
+  "topic": "社区健康服务项目介绍",
+  "pageCount": 8,
+  "scenario": "合作沟通",
+  "purpose": "介绍项目目标、服务范围和合作讨论边界",
+  "audience": "社区合作机构和潜在服务参与者",
+  "confirmedFacts": [
+    "项目处于方案讨论阶段",
+    "具体服务时间和合作机构尚待确认"
+  ],
+  "mustHave": "项目目标、目标人群、服务框架、合作方向、下一步沟通",
+  "forbiddenContent": "不得编造服务规模、机构名称、预算、合作关系或健康效果数据",
+  "deliveryRequirements": "每页提供标题、关键结论、三到五条正文和版式建议"
+}

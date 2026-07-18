@@ -1,9 +1,15 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
-import {
+import { fileURLToPath } from "node:url";
+
+const controlledEvidenceUrl = new URL("../真实回归/tools/v2315-controlled-evidence.mjs", import.meta.url);
+const controlledEvidenceAvailable = existsSync(fileURLToPath(controlledEvidenceUrl));
+const controlledEvidence = controlledEvidenceAvailable ? await import(controlledEvidenceUrl) : {};
+const {
   acquireExclusiveRunLock,
   buildAcceptanceArtifacts,
   captureSingleRequestRun,
@@ -11,9 +17,10 @@ import {
   createOpenWebUiTelemetryObserver,
   createRunIdentity,
   loadProjectEnv
-} from "../真实回归/tools/v2315-controlled-evidence.mjs";
+} = controlledEvidence;
+const controlledTest = controlledEvidenceAvailable ? test : test.skip;
 
-test("v2.3.15 controlled runner loads project env without exposing values", async () => {
+controlledTest("v2.3.15 controlled runner loads project env without exposing values", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "v2315-env-"));
   const envPath = path.join(root, ".env");
   await writeFile(envPath, "LOCAL_MODEL_ENABLED=true\nLOCAL_MODEL_ID=test-model\nOPENWEBUI_API_KEY=secret-value\n", "utf8");
@@ -35,7 +42,7 @@ test("v2.3.15 controlled runner loads project env without exposing values", asyn
   }
 });
 
-test("v2.3.15 controlled runner fails fast when project env is absent", async () => {
+controlledTest("v2.3.15 controlled runner fails fast when project env is absent", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "v2315-env-missing-"));
   assert.throws(
     () => loadProjectEnv({ projectRoot: root, envPath: path.join(root, ".env") }),
@@ -43,7 +50,7 @@ test("v2.3.15 controlled runner fails fast when project env is absent", async ()
   );
 });
 
-test("v2.3.15 controlled telemetry observes the generic OpenAI-compatible endpoint", async () => {
+controlledTest("v2.3.15 controlled telemetry observes the generic OpenAI-compatible endpoint", async () => {
   const endpoint = "http://127.0.0.1:1234/v1/chat/completions";
   const responses = [];
   const fetchImpl = async input => {
@@ -64,7 +71,7 @@ test("v2.3.15 controlled telemetry observes the generic OpenAI-compatible endpoi
   assert.equal(observer.calls[0].kind, "initial");
 });
 
-test("v2.3.15 legacy OpenWebUI observer remains a behavior-only alias", async () => {
+controlledTest("v2.3.15 legacy OpenWebUI observer remains a behavior-only alias", async () => {
   const endpoint = "http://127.0.0.1:7788/custom/chat/completions";
   const observer = createOpenWebUiTelemetryObserver({
     endpoint,
@@ -77,7 +84,7 @@ test("v2.3.15 legacy OpenWebUI observer remains a behavior-only alias", async ()
   assert.equal(observer.calls.length, 1);
 });
 
-test("v2.3.15 evidence harness rejects a concurrent runner before any request", async () => {
+controlledTest("v2.3.15 evidence harness rejects a concurrent runner before any request", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "v2315-lock-"));
   const lockPath = path.join(root, ".run.lock");
   const first = await acquireExclusiveRunLock(lockPath, { run_id: "run-a", pid: 101 });
@@ -92,7 +99,7 @@ test("v2.3.15 evidence harness rejects a concurrent runner before any request", 
   }
 });
 
-test("v2.3.15 evidence harness sends at most one request and writes one unique paired run", async () => {
+controlledTest("v2.3.15 evidence harness sends at most one request and writes one unique paired run", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "v2315-capture-"));
   let requestCount = 0;
   try {
@@ -130,7 +137,7 @@ test("v2.3.15 evidence harness sends at most one request and writes one unique p
   }
 });
 
-test("v2.3.15 evidence harness writes the complete paired acceptance evidence set", async () => {
+controlledTest("v2.3.15 evidence harness writes the complete paired acceptance evidence set", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "v2315-evidence-set-"));
   try {
     const identity = createRunIdentity({
@@ -171,7 +178,7 @@ test("v2.3.15 evidence harness writes the complete paired acceptance evidence se
   }
 });
 
-test("v2.3.15 evidence harness quarantines mismatched request ids instead of writing canonical evidence", async () => {
+controlledTest("v2.3.15 evidence harness quarantines mismatched request ids instead of writing canonical evidence", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "v2315-mismatch-"));
   try {
     const identity = createRunIdentity({ pid: 404, runId: "run-mismatch" });
@@ -196,7 +203,7 @@ test("v2.3.15 evidence harness quarantines mismatched request ids instead of wri
   }
 });
 
-test("v2.3.15 evidence harness quarantines a mismatched metadata request id", async () => {
+controlledTest("v2.3.15 evidence harness quarantines a mismatched metadata request id", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "v2315-metadata-mismatch-"));
   try {
     const identity = createRunIdentity({ pid: 414, runId: "run-metadata-mismatch" });
@@ -221,7 +228,7 @@ test("v2.3.15 evidence harness quarantines a mismatched metadata request id", as
   }
 });
 
-test("v2.3.15 evidence harness writes only allowed diagnostic fields", async () => {
+controlledTest("v2.3.15 evidence harness writes only allowed diagnostic fields", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "v2315-safe-fields-"));
   try {
     const identity = createRunIdentity({ pid: 424, runId: "run-safe-fields" });
@@ -284,7 +291,7 @@ test("v2.3.15 evidence harness writes only allowed diagnostic fields", async () 
   }
 });
 
-test("v2.3.15 evidence accepts a public outline but persists only result metadata", () => {
+controlledTest("v2.3.15 evidence accepts a public outline but persists only result metadata", () => {
   const identity = createRunIdentity({ pid: 428, runId: "run-result-metadata" });
   const artifacts = buildAcceptanceArtifacts({
     publicResponse: {
@@ -346,7 +353,7 @@ test("v2.3.15 evidence accepts a public outline but persists only result metadat
   assert.doesNotMatch(serialized, /CUSTOMER_BODY|PRODUCTION_BODY|OUTLINE_TITLE|PAGE_ONE|PAGE_TWO/);
 });
 
-test("v2.3.15 evidence detects value-level secrets and internal runtime data", () => {
+controlledTest("v2.3.15 evidence detects value-level secrets and internal runtime data", () => {
   const identity = createRunIdentity({ pid: 429, runId: "run-value-leaks" });
   const artifacts = buildAcceptanceArtifacts({
     publicResponse: {
@@ -401,7 +408,7 @@ test("v2.3.15 evidence detects value-level secrets and internal runtime data", (
   assert.equal(artifacts.internalDiagnostics.planning_model.planning_rejection_reason, "");
 });
 
-test("v2.3.15 evidence harness preserves safe fulfillment acceptance evidence", async () => {
+controlledTest("v2.3.15 evidence harness preserves safe fulfillment acceptance evidence", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "v2315-fulfillment-evidence-"));
   try {
     const identity = createRunIdentity({ pid: 434, runId: "run-fulfillment-evidence" });
@@ -522,7 +529,7 @@ test("v2.3.15 evidence harness preserves safe fulfillment acceptance evidence", 
   }
 });
 
-test("v2.3.15 evidence harness releases its lock after a single failed request", async () => {
+controlledTest("v2.3.15 evidence harness releases its lock after a single failed request", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "v2315-release-"));
   const lockPath = path.join(root, ".run.lock");
   let requestCount = 0;

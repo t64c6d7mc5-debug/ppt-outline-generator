@@ -52,7 +52,7 @@ done < "$candidate_list"
 
 required_env_lines=(
   'PORT=3100'
-  'LOCAL_MODEL_ENABLED=true'
+  'LOCAL_MODEL_ENABLED=false'
   'LOCAL_MODEL_PROVIDER=openai-compatible'
   'LOCAL_MODEL_BASE_URL=http://127.0.0.1:8080/api'
   'LOCAL_MODEL_API_KEY='

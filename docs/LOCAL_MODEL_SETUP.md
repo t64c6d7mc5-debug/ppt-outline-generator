@@ -10,7 +10,7 @@
    cp .env.example .env
    ```
 
-2. 在 `.env` 中填写本机实际地址与模型 ID。`LOCAL_MODEL_API_KEY` 仅在服务要求鉴权时填写；否则保持空白。
+2. 模板默认 `LOCAL_MODEL_ENABLED=false`，所以不配置模型也能使用 deterministic fallback。配置好本机实际地址、模型 ID 和必要凭据后，再将其改为 `LOCAL_MODEL_ENABLED=true`。`LOCAL_MODEL_API_KEY` 仅在服务要求鉴权时填写；否则保持空白。本地模型不是强制依赖；启用后可获得更丰富、更贴合需求的生成内容。
 
 3. 运行检查：
 
@@ -41,7 +41,7 @@ The project calls any OpenAI Chat Completions-compatible local service through `
    cp .env.example .env
    ```
 
-2. Set the real local endpoint and model ID in `.env`. Leave `LOCAL_MODEL_API_KEY` blank unless the service requires authentication.
+2. The template defaults to `LOCAL_MODEL_ENABLED=false`, so deterministic fallback remains available before a model is configured. After setting a real local endpoint, model ID, and any required credential, change it to `LOCAL_MODEL_ENABLED=true`. A local model is optional, but it produces richer content that is more closely tailored to the request. Leave `LOCAL_MODEL_API_KEY` blank unless the service requires authentication.
 
 3. Run the non-generating check:
 

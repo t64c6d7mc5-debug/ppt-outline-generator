@@ -18,8 +18,39 @@ required_docs=(
   docs/RESULT_STATUS.md
 )
 
+required_public_files=(
+  examples/simple-mode-input.json
+  examples/professional-mode-input.json
+  examples/customer-version-example.md
+  examples/production-version-example.md
+  .github/ISSUE_TEMPLATE/bug_report.yml
+  .github/ISSUE_TEMPLATE/feature_request.yml
+  .github/ISSUE_TEMPLATE/config.yml
+  .github/pull_request_template.md
+)
+
 for doc in "${required_docs[@]}"; do
   [[ -f "$doc" ]] || { echo "[FAIL] Missing document: $doc" >&2; exit 1; }
+done
+
+for file in "${required_public_files[@]}"; do
+  [[ -s "$file" ]] || { echo "[FAIL] Missing public onboarding file: $file" >&2; exit 1; }
+done
+
+grep -Fqx 'LOCAL_MODEL_ENABLED=false' .env.example || { echo "[FAIL] .env.example must default to fallback mode" >&2; exit 1; }
+
+for doc in README.md README_EN.md docs/QUICK_START.md docs/LOCAL_MODEL_SETUP.md; do
+  rg -q 'LOCAL_MODEL_ENABLED=false' "$doc" || { echo "[FAIL] Missing fallback-default guidance: $doc" >&2; exit 1; }
+  rg -q 'LOCAL_MODEL_ENABLED=true' "$doc" || { echo "[FAIL] Missing model-enable guidance: $doc" >&2; exit 1; }
+done
+
+for doc in README.md README_EN.md docs/QUICK_START.md; do
+  rg -q 'https://github.com/t64c6d7mc5-debug/ppt-outline-generator.git' "$doc" || { echo "[FAIL] Missing public clone URL: $doc" >&2; exit 1; }
+  rg -q 'cd ppt-outline-generator' "$doc" || { echo "[FAIL] Missing clone directory: $doc" >&2; exit 1; }
+  if rg -q '<repository-url>|local-llm-ppt-script-generator' "$doc"; then
+    echo "[FAIL] Stale clone instructions: $doc" >&2
+    exit 1
+  fi
 done
 
 for heading in '项目简介' '功能截图' '核心能力' 'Result-First' '结果状态' '环境要求' '下载方式' '通用本地模型配置' '生成模式' '常见问题' '项目目录' '开发、测试与贡献'; do

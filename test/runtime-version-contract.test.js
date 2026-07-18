@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+import { fileURLToPath } from "node:url";
 
 import { createAppServer } from "../server.js";
 
@@ -10,6 +12,8 @@ const EXPECTED_RUNTIME = {
   pipeline: "result-first",
   response_contract_version: 2
 };
+const controlledRunnerUrl = new URL("../真实回归/tools/v2315-controlled-single-request.mjs", import.meta.url);
+const controlledRunnerTest = existsSync(fileURLToPath(controlledRunnerUrl)) ? test : test.skip;
 
 test("runtime health endpoint identifies the result-first response contract", async () => {
   const server = createAppServer();
@@ -39,8 +43,8 @@ test("the HTML pins main.js to response contract v2 while static responses remai
   }
 });
 
-test("controlled runner verifies the same runtime contract before its single outline request", async () => {
-  const source = await readFile(new URL("../真实回归/tools/v2315-controlled-single-request.mjs", import.meta.url), "utf8");
+controlledRunnerTest("controlled runner verifies the same runtime contract before its single outline request", async () => {
+  const source = await readFile(controlledRunnerUrl, "utf8");
   assert.match(source, /\/api\/health/);
   assert.match(source, /pipeline\s*!==\s*["']result-first["']/);
   assert.match(source, /response_contract_version\s*!==\s*2/);
