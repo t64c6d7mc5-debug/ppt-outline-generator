@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.3.15-rc3 - 2026-07-18
+
+- Publishes the public-onboarding release candidate with local-model calls disabled by default for new installations.
+- Documents deterministic fallback as the safe default until an OpenAI-compatible endpoint, model ID, and any required credentials are configured.
+- Adds sanitized examples and GitHub issue and pull-request templates for public collaboration.
+- Keeps the Result-First Pipeline, deterministic fallback behavior, model prompts, validators, quality states, and safety rules unchanged from rc2.
+
 ## v2.3.15-rc2 - 2026-07-16
 
 - Freezes the public release candidate around the verified Result-First delivery contract.

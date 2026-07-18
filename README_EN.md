@@ -2,7 +2,7 @@
 
 A local-first, result-first application that turns business forms, source material, and optional local-model planning into an editable customer script, a production script, and a transparent quality status.
 
-> Release candidate: `v2.3.15-rc2`. The product goal is to return an editable result for a normal request with a recognizable topic and purpose. It does not promise equal quality from every model, and it does not replace human review.
+> Release candidate: `v2.3.15-rc3`. The product goal is to return an editable result for a normal request with a recognizable topic and purpose. It does not promise equal quality from every model, and it does not replace human review.
 
 ## Screenshot placeholder
 

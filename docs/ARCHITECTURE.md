@@ -1,6 +1,6 @@
 # Result-First Architecture
 
-Public release contract: `v2.3.15-rc2`, response contract version `2`.
+Public release contract: `v2.3.15-rc3`, response contract version `2`.
 
 ## Product boundary
 

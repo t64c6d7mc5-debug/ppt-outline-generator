@@ -73,13 +73,13 @@ for script in scripts/start.sh scripts/start-macos.command scripts/check-environ
   fi
 done
 
-for doc in README.md README_EN.md KNOWN_LIMITATIONS.md CONTRIBUTING.md SECURITY.md CHANGELOG.md RELEASE-v2.3.15-rc2.md docs/ARCHITECTURE.md docs/QUICK_START.md docs/LOCAL_MODEL_SETUP.md docs/RESULT_STATUS.md; do
+for doc in README.md README_EN.md KNOWN_LIMITATIONS.md CONTRIBUTING.md SECURITY.md CHANGELOG.md RELEASE-v2.3.15-rc2.md RELEASE-v2.3.15-rc3.md docs/ARCHITECTURE.md docs/QUICK_START.md docs/LOCAL_MODEL_SETUP.md docs/RESULT_STATUS.md; do
   if [[ ! -f "$doc" ]]; then
     report_failure "required release document is missing: $doc"
   fi
 done
 
-if rg -n --no-messages 'v2\.3\.(12|14|15-rc1)' README.md README_EN.md KNOWN_LIMITATIONS.md CONTRIBUTING.md SECURITY.md CHANGELOG.md RELEASE-v2.3.15-rc2.md docs/ARCHITECTURE.md docs/QUICK_START.md docs/LOCAL_MODEL_SETUP.md docs/RESULT_STATUS.md 2>/dev/null; then
+if rg -n --no-messages 'v2\.3\.(12|14|15-rc1)' README.md README_EN.md KNOWN_LIMITATIONS.md CONTRIBUTING.md SECURITY.md CHANGELOG.md RELEASE-v2.3.15-rc2.md RELEASE-v2.3.15-rc3.md docs/ARCHITECTURE.md docs/QUICK_START.md docs/LOCAL_MODEL_SETUP.md docs/RESULT_STATUS.md 2>/dev/null; then
   report_failure "public documentation mixes an older release version"
 fi
 

@@ -12,6 +12,7 @@ required_docs=(
   SECURITY.md
   CHANGELOG.md
   RELEASE-v2.3.15-rc2.md
+  RELEASE-v2.3.15-rc3.md
   docs/ARCHITECTURE.md
   docs/QUICK_START.md
   docs/LOCAL_MODEL_SETUP.md
@@ -65,7 +66,7 @@ node --input-type=module --eval '
 import { readFile, access } from "node:fs/promises";
 import path from "node:path";
 const root = process.cwd();
-const files = ["README.md", "README_EN.md", "KNOWN_LIMITATIONS.md", "CONTRIBUTING.md", "SECURITY.md", "CHANGELOG.md", "RELEASE-v2.3.15-rc2.md", "docs/ARCHITECTURE.md", "docs/QUICK_START.md", "docs/LOCAL_MODEL_SETUP.md", "docs/RESULT_STATUS.md"];
+const files = ["README.md", "README_EN.md", "KNOWN_LIMITATIONS.md", "CONTRIBUTING.md", "SECURITY.md", "CHANGELOG.md", "RELEASE-v2.3.15-rc2.md", "RELEASE-v2.3.15-rc3.md", "docs/ARCHITECTURE.md", "docs/QUICK_START.md", "docs/LOCAL_MODEL_SETUP.md", "docs/RESULT_STATUS.md"];
 const linkPattern = /\[[^\]]+\]\(([^)]+)\)/g;
 for (const file of files) {
   const text = await readFile(path.join(root, file), "utf8");
