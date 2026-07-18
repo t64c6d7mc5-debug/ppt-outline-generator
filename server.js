@@ -11,7 +11,7 @@ const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const MAX_BODY_BYTES = 1024 * 1024;
 export const RUNTIME_INFO = Object.freeze({
   status: "ok",
-  app_version: "v2.3.15-rc3",
+  app_version: "v2.3.15-rc4",
   pipeline: "result-first",
   response_contract_version: 2
 });

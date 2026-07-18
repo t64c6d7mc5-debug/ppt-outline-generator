@@ -8,9 +8,9 @@ failures=0
 candidate_list="$(mktemp)"
 trap 'rm -f "$candidate_list"' EXIT
 users_root="/""Users"
-private_app_support="/""Library/Application Support/PPT脚本生成器"
-private_desktop_launcher="/""Desktop/启动PPT脚本生成器"
-personal_path_pattern="${users_root}/(ai作品集|qiuxingbo)/|${private_app_support}|${private_desktop_launcher}"
+library_root="/""Library"
+desktop_root="/""Desktop"
+personal_path_pattern="${users_root}/[^/]+/|${library_root}/(Application Support|Logs)/[^[:space:]]+|${desktop_root}/[^[:space:]]+"
 
 report_failure() {
   echo "[FAIL] $1" >&2
@@ -73,7 +73,7 @@ for script in scripts/start.sh scripts/start-macos.command scripts/check-environ
   fi
 done
 
-for doc in README.md README_EN.md KNOWN_LIMITATIONS.md CONTRIBUTING.md SECURITY.md CHANGELOG.md RELEASE-v2.3.15-rc2.md RELEASE-v2.3.15-rc3.md docs/ARCHITECTURE.md docs/QUICK_START.md docs/LOCAL_MODEL_SETUP.md docs/RESULT_STATUS.md; do
+for doc in README.md README_EN.md KNOWN_LIMITATIONS.md CONTRIBUTING.md SECURITY.md CHANGELOG.md RELEASE-v2.3.15-rc2.md RELEASE-v2.3.15-rc3.md RELEASE-v2.3.15-rc4.md docs/ARCHITECTURE.md docs/QUICK_START.md docs/LOCAL_MODEL_SETUP.md docs/RESULT_STATUS.md; do
   if [[ ! -f "$doc" ]]; then
     report_failure "required release document is missing: $doc"
   fi

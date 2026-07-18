@@ -8,7 +8,7 @@ import { createAppServer } from "../server.js";
 
 const EXPECTED_RUNTIME = {
   status: "ok",
-  app_version: "v2.3.15-rc3",
+  app_version: "v2.3.15-rc4",
   pipeline: "result-first",
   response_contract_version: 2
 };
@@ -30,12 +30,12 @@ test("runtime health endpoint identifies the result-first response contract", as
 
 test("the HTML pins main.js to response contract v2 while static responses remain no-store", async () => {
   const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
-  assert.match(html, /js\/main\.js\?v=2\.3\.15-rc3-result-first-2/);
+  assert.match(html, /js\/main\.js\?v=2\.3\.15-rc4-result-first-2/);
 
   const server = createAppServer();
   await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
   try {
-    const response = await fetch(`http://127.0.0.1:${server.address().port}/js/main.js?v=2.3.15-rc3-result-first-2`);
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/js/main.js?v=2.3.15-rc4-result-first-2`);
     assert.equal(response.status, 200);
     assert.equal(response.headers.get("cache-control"), "no-store");
   } finally {

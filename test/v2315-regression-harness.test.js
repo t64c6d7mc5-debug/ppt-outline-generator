@@ -355,6 +355,7 @@ controlledTest("v2.3.15 evidence accepts a public outline but persists only resu
 
 controlledTest("v2.3.15 evidence detects value-level secrets and internal runtime data", () => {
   const identity = createRunIdentity({ pid: 429, runId: "run-value-leaks" });
+  const userHomePrefix = `/${"Users"}`;
   const artifacts = buildAcceptanceArtifacts({
     publicResponse: {
       request_id: "req-value-leaks",
@@ -365,11 +366,11 @@ controlledTest("v2.3.15 evidence detects value-level secrets and internal runtim
       source_summary: {
         model_attempted: true,
         model_used: true,
-        model_id: "/Users/example/private/model.gguf"
+        model_id: `${userHomePrefix}/example/private/model.gguf`
       },
       customer_version: [
         "Authorization: Bearer test-local-secret",
-        "本机文件 /Users/example/private/project.json",
+        `本机文件 ${userHomePrefix}/example/private/project.json`,
         "system_prompt: do not expose this",
         `sha256=${"a".repeat(64)}`,
         "lineage_parent=planner-private",

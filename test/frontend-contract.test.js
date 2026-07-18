@@ -137,7 +137,7 @@ test("UI exposes two copy actions, professional deadline, production details and
   assert.match(html, /id="copyClientBtn"[^>]*>复制客户版</);
   assert.match(html, /id="copyBtn"[^>]*>复制制作版</);
   assert.match(html, /id="professionalDeadline"/);
-  assert.match(html, /<script type="module" src="js\/main\.js\?v=2\.3\.15-rc3-result-first-2"><\/script>/);
+  assert.match(html, /<script type="module" src="js\/main\.js\?v=2\.3\.15-rc4-result-first-2"><\/script>/);
   assert.doesNotMatch(html, /纯前端离线工具/);
   assert.match(source, /制作与验证信息/);
   assert.match(source, /formatQualityReport/);

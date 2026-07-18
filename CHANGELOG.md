@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.3.15-rc4 - 2026-07-18
+
+- Removes machine-specific launcher references from the public test suite.
+- Replaces the launcher coverage with a temporary, portable test fixture that never contacts local model or UI services.
+- Keeps the Result-First Pipeline, deterministic fallback, model prompts, validators, quality states, safety rules, and model-call behavior unchanged from rc3.
+
 ## v2.3.15-rc3 - 2026-07-18
 
 - Publishes the public-onboarding release candidate with local-model calls disabled by default for new installations.

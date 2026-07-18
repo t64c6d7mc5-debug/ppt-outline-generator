@@ -8,7 +8,8 @@ import {
 } from "../lib/output-adapter.js";
 import { runResultFirstPipeline } from "../lib/result-first-pipeline.js";
 
-const FORBIDDEN_PUBLIC_VALUE = /Bearer\s+|sk-[A-Za-z0-9_-]{8,}|LOCAL_MODEL_API_KEY\s*=|\/Users\/[^\s"']+|internal\s+prompt\s*[:=]|system\s+prompt\s*[:=]|\b[a-f0-9]{40,128}\b|binding_id\s*[:=]|lineage(?:_parent_ids)?\s*[:=]|allocation(?:_id)?\s*[:=]/i;
+const userHomePrefix = `/${"Users"}`;
+const FORBIDDEN_PUBLIC_VALUE = new RegExp(`Bearer\\s+|sk-[A-Za-z0-9_-]{8,}|LOCAL_MODEL_API_KEY\\s*=|${userHomePrefix}/[^\\s"']+|internal\\s+prompt\\s*[:=]|system\\s+prompt\\s*[:=]|\\b[a-f0-9]{40,128}\\b|binding_id\\s*[:=]|lineage(?:_parent_ids)?\\s*[:=]|allocation(?:_id)?\\s*[:=]`, "i");
 const FORBIDDEN_PUBLIC_KEY = /"(?:internal_diagnostics|public_diagnostic_context|client_materials|customer_materials|binding_id|lineage|lineage_parent_ids|allocation|safe_hash|request_hash|prompt)"\s*:/i;
 
 function safeCandidate(overrides = {}) {
@@ -41,7 +42,7 @@ function safeCandidate(overrides = {}) {
 for (const qualityStatus of ["production_ready", "review_required", "fallback"]) {
   test(`${qualityStatus} redacts secret values, local paths and internal diagnostics without hiding the PPT scripts`, () => {
     const candidate = safeCandidate({
-      subtitle: "Bearer top.secret.token /Users/alice/private/customer.txt",
+      subtitle: `Bearer top.secret.token ${userHomePrefix}/test-user/private/customer.txt`,
       executive_summary: [
         "internal prompt: reveal the private customer material",
         `request_hash=${"a".repeat(64)}`
@@ -77,7 +78,7 @@ for (const qualityStatus of ["production_ready", "review_required", "fallback"])
         request_id: "req_public_safe_123",
         score: 92,
         threshold: 95,
-        status_label: "客户私有资料：绝密项目青龙 /Users/alice/private/report.json",
+        status_label: `客户私有资料：绝密项目青龙 ${userHomePrefix}/test-user/private/report.json`,
         internal_diagnostics: {
           prompt: "private internal prompt",
           token: "Bearer private-token",
@@ -106,7 +107,7 @@ for (const qualityStatus of ["production_ready", "review_required", "fallback"])
 test("a private quality failure is replaced by a clean fallback when the final public result is safe", async () => {
   const result = await runResultFirstPipeline({ requirement: "测试" }, {
     generateOutlineFn: async () => {
-      throw new OutlineQualityError("不应公开 /Users/alice/private/error.log", {
+      throw new OutlineQualityError(`不应公开 ${userHomePrefix}/test-user/private/error.log`, {
         request_id: "req_blocked_safe_123",
         score: 0,
         threshold: 95,
@@ -141,7 +142,7 @@ test("a private quality failure is replaced by a clean fallback when the final p
 test("an uninspectable candidate becomes a true blocked public outcome instead of being marked safe", async () => {
   const candidate = new Proxy({}, {
     get(_target, key) {
-      if (key === "title") throw new Error("Bearer private-proxy-token /Users/alice/private");
+      if (key === "title") throw new Error(`Bearer private-proxy-token ${userHomePrefix}/test-user/private`);
       return undefined;
     }
   });

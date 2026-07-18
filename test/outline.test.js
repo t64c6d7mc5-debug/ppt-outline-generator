@@ -159,13 +159,13 @@ test("static HTML, CSS, and JS are served with correct content types", async () 
   }
 });
 
-test("served UI exposes v2.3.15-rc3 deadline choices and sends optional request fields", async () => {
+test("served UI exposes v2.3.15-rc4 deadline choices and sends optional request fields", async () => {
   const html = await (await fetch(`${baseUrl}/`)).text();
   const javascript = await (await fetch(`${baseUrl}/js/main.js`)).text();
   const requestBuilders = await (await fetch(`${baseUrl}/js/request-builders.js`)).text();
-  assert.equal(packageInfo.version, "2.3.15-rc3");
-  assert.match(html, /PPT Outline Generator v2\.3\.15-rc3/);
-  assert.match(html, /PPT 大纲生成工作台 v2\.3\.15-rc3/);
+  assert.equal(packageInfo.version, "2.3.15-rc4");
+  assert.match(html, /PPT Outline Generator v2\.3\.15-rc4/);
+  assert.match(html, /PPT 大纲生成工作台 v2\.3\.15-rc4/);
   assert.doesNotMatch(html, /v2\.3\.5/);
   assert.match(html, /<select id="simpleDeadline">/);
   for (const label of ["未指定", "今晚", "明天上午", "三天内", "不急"]) {
